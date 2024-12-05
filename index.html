@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mwahhh</title>
+    <style>
+        body {
+            margin: 0;
+            background: #000;
+            color: #fff;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+            flex-direction: column;
+        }
+
+        .snow-globe {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, #fff, #333);
+            border-radius: 50%;
+            overflow: hidden;
+            border: 10px solid #444;
+            box-shadow: 0 10px 15px rgba(255, 255, 255, 0.3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .snowflakes {
+            position: absolute;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .wishes {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .wish {
+            position: absolute;
+            font-size: 1.5rem;
+            color: #ff4500;
+            font-weight: bold;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .wish:nth-child(1) { animation-delay: 0s; }
+        .wish:nth-child(2) { animation-delay: 1s; }
+        .wish:nth-child(3) { animation-delay: 2s; }
+        .wish:nth-child(4) { animation-delay: 3s; }
+        .wish:nth-child(5) { animation-delay: 4s; }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100px) translateX(0) rotate(0deg);
+                opacity: 0;
+            }
+            50% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-200px) translateX(20px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .form-container {
+            text-align: center;
+        }
+
+        .form-container input {
+            padding: 10px;
+            font-size: 1rem;
+            margin: 10px;
+            border-radius: 5px;
+            border: 1px solid #444;
+            background: #333;
+            color: #fff;
+        }
+
+        .form-container button {
+            padding: 10px 20px;
+            font-size: 1rem;
+            background: #ff4500;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .form-container button:hover {
+            background: #e63900;
+        }
+
+        .wish-count {
+            font-size: 1.2rem;
+            color: #fff;
+            margin-top: 10px;
+        }
+
+        .error {
+            color: red;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="snow-globe">
+        <div class="snowflakes"></div>
+        <div class="wishes" id="wishesContainer">
+            <span class="wish">Anxiety</span>
+            <span class="wish">CountryDawgg</span>
+            <span class="wish">Skooler cafe</span>
+            <span class="wish">Saints.tj</span>
+            <span class="wish">KDMV</span>
+            <span class="wish">Vampiric</span>
+            <span class="wish">MM mobile shop</span>
+            <span class="wish">Union project</span>
+            <span class="wish">Decay</span>
+            <span class="wish">Anxious</span>
+            <span class="wish">Pentypanther.My</span>
+            <span class="wish">Umi Matcha</span>
+            <span class="wish">The homie</span>
+            <span class="wish">The old love</span>
+            <span class="wish">Lousy Love</span>
+            <span class="wish">The bookmark</span>
+            <span class="wish">Wintercafebyrex</span>
+            <span class="wish">Heather</span>
+            <span class="wish">Youth sport club</span>
+        </div>
+    </div>
+    <div class="form-container">
+        <input type="text" id="wishInput" placeholder="Adding collaboration here.....">
+        <button onclick="addWish()">Add collab</button>
+        <div class="wish-count">Total Collab: <span id="wishCount">13</span></div>
+        <div class="error" id="errorMessage"></div>
+    </div>
+
+    <script>
+        const snowflakes = document.querySelector('.snowflakes');
+        const wishesContainer = document.getElementById('wishesContainer');
+        const wishInput = document.getElementById('wishInput');
+        const wishCountDisplay = document.getElementById('wishCount');
+        const errorMessage = document.getElementById('errorMessage');
+    
+        let wishCount = document.querySelectorAll('.wishes .wish').length;
+        wishCountDisplay.textContent = wishCount;
+    
+        function createSnowflake() {
+            const flake = document.createElement('div');
+            flake.classList.add('snowflake');
+            flake.style.left = `${Math.random() * 100}%`;
+            flake.style.animationDuration = `${3 + Math.random() * 5}s`;
+            flake.style.opacity = `${Math.random()}`;
+            flake.style.fontSize = `${Math.random() * 10 + 10}px`;
+            flake.textContent = '❄';
+            snowflakes.appendChild(flake);
+    
+            setTimeout(() => {
+                flake.remove();
+            }, 8000);
+        }
+    
+        setInterval(createSnowflake, 200);
+    
+        function addWish() {
+            const wishText = wishInput.value.trim();
+            errorMessage.textContent = '';
+            if (!wishText) {
+                errorMessage.textContent = 'Please enter a valid collaboration.';
+                return;
+            }
+    
+            const existingWishes = Array.from(document.querySelectorAll('.wish')).map(wish => wish.textContent.toLowerCase());
+            if (existingWishes.includes(wishText.toLowerCase())) {
+                errorMessage.textContent = 'This collaboration already exists!';
+                return;
+            }
+    
+            const wishElement = document.createElement('span');
+            wishElement.classList.add('wish');
+            wishElement.textContent = wishText;
+            wishElement.style.animationDelay = `${Math.random() * 5}s`;
+            wishesContainer.appendChild(wishElement);
+    
+            wishCount++;
+            wishCountDisplay.textContent = wishCount;
+    
+            if (wishCount === 20) {
+                displayCongratulations();
+            }
+    
+            wishInput.value = '';
+            wishInput.focus();
+        }
+    
+        function displayCongratulations() {
+            const congratsMessage = document.createElement('div');
+            congratsMessage.style.position = 'absolute';
+            congratsMessage.style.top = '50%';
+            congratsMessage.style.left = '50%';
+            congratsMessage.style.transform = 'translate(-50%, -50%)';
+            congratsMessage.style.padding = '20px';
+            congratsMessage.style.background = '#fff';
+            congratsMessage.style.color = '#000';
+            congratsMessage.style.fontSize = '1.5rem';
+            congratsMessage.style.textAlign = 'center';
+            congratsMessage.style.border = '2px solid #ff4500';
+            congratsMessage.style.borderRadius = '10px';
+            congratsMessage.style.boxShadow = '0 5px 15px rgba(255, 255, 255, 0.3)';
+            congratsMessage.innerHTML = `
+                Congratulations, Masi! 🎉<br>
+                You've collaborated with 20 brands as of July 2024 and still counting...<br>
+                Let's do even better in 2025!
+            `;
+            document.body.appendChild(congratsMessage);
+    
+            setTimeout(() => {
+                congratsMessage.remove();
+            }, 5000); 
+        }
+    
+        window.onload = () => {
+            wishInput.focus();
+        };
+    </script>
+</body>
+</html>
